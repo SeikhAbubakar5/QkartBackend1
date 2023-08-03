@@ -14,7 +14,7 @@ const envVarsSchema = Joi.object()
       .valid("production", "development", "test")
       .required(),
     PORT: Joi.number().default(3000),
-    MONGODB_URL: Joi.string().required().description("Mongo DB url"),
+    MONGODB_URL: Joi.string().required().description("mongodb://127.0.0.1:27017"),
   })
   .unknown();
 
