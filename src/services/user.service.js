@@ -32,11 +32,13 @@ const getUserByEmail=async (email)=>{
 // TODO: CRIO_TASK_MODULE_UNDERSTANDING_BASICS - Implement createUser(user)
 const createUser=async (userBody)=>{
 
-const emailTaken = await User.isEmailTaken(userBody.email) // Ensure you await
+const emailTaken =await User.isEmailTaken(userBody.email) // Ensure you await
     if(emailTaken){
         throw new ApiError(httpStatus.OK, "Email already taken");
     }
-    const newUser = await User.create(userBody);
+    const hashedPassword =await bcrypt.hash(userBody.password, 5);
+    userBody.password=hashedPassword;
+    const newUser =await User.create(userBody);
   return newUser;
 };
 
