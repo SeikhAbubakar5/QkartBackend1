@@ -64,8 +64,34 @@ const emailTaken =await User.isEmailTaken(userBody.email) // Ensure you await
  * 200 status code on duplicate email - https://stackoverflow.com/a/53144807
  */
 
+
+// TODO: CRIO_TASK_MODULE_CART - Implement getUserAddressById()
+/**
+ * Get subset of user's data by id
+ * - Should fetch from Mongo only the email and address fields for the user apart from the id
+ *
+ * @param {ObjectId} id
+ * @returns {Promise<User>}
+ */
+const getUserAddressById = async (id) => {
+  return  await User.findOne({_id:id},{email:1,address:1});
+};
+
+/**
+ * Set user's shipping address
+ * @param {String} email
+ * @returns {String}
+ */
+const setAddress = async (user, newAddress) => {
+  user.address = newAddress;
+  await user.save();
+
+  return user.address;;
+};
 module.exports={
-    getUserById,
-    getUserByEmail,
-    createUser,
+  getUserById,
+  getUserByEmail,
+  createUser,
+  getUserAddressById,
+  setAddress,
 }

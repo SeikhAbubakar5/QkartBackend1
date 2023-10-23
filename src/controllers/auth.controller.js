@@ -2,7 +2,6 @@ const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
 const { authService, userService, tokenService } = require("../services");
 
-
 /**
  * Perform the following steps:
  * -  Call the userService to create a new user
