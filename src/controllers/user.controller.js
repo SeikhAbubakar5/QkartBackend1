@@ -86,7 +86,7 @@ throw new ApiError(httpStatus.NOT_FOUND, "User not found");
 if (user.email!= req.user.email) {
 throw new ApiError(
   httpStatus.FORBIDDEN,
-  "Not authorized"
+  "User not authorized to access this resource"
 );
 }
 

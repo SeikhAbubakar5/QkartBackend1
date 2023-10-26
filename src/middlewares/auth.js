@@ -2,7 +2,6 @@ const passport = require("passport");
 const httpStatus = require("http-status");
 const ApiError = require("../utils/ApiError");
 
-
 /**
  * Custom callback function implementation to verify callback from passport
  * - If authentication failed, reject the promise and send back an ApiError object with
@@ -39,3 +38,4 @@ const auth = async (req, res, next) => {
 
 
 module.exports = auth;
+
