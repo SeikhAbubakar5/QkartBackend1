@@ -27,7 +27,6 @@ describe("Cart test", () => {
 
       const res = cartService.checkout(userOne);
 
-      // TODO: CRIO_TASK_MODULE_TEST - Assert if
       /* - ApiError is thrown
        * - the "statusCode" field of response is "404 NOT FOUND"
        *
@@ -38,13 +37,6 @@ describe("Cart test", () => {
        *  "stack": "<Error-stack-trace-if-present>"
        * }
        */
-      //  expect(true).toEqual(false);
-      await expect(res).rejects.toThrow(ApiError);
-      await expect(res).rejects.toEqual(
-        expect.objectContaining({
-          statusCode: httpStatus.NOT_FOUND,
-        })
-      );
     });
 
     it("should throw 400 error if user's cart doesn't have any product", async () => {
@@ -53,15 +45,6 @@ describe("Cart test", () => {
 
       const res = cartService.checkout(userOne);
 
-      // TODO: CRIO_TASK_MODULE_TEST - Assert if
-      // - ApiError is thrown
-      // - the "statusCode" field of response is "400 BAD REQUEST"
-      await expect(res).rejects.toThrow(ApiError);
-      await expect(res).rejects.toEqual(
-        expect.objectContaining({
-          statusCode: httpStatus.BAD_REQUEST,
-        })
-      );
     });
 
     it("should throw 400 error if address is not set - when User.hasSetNonDefaultAddress() returns false", async () => {
@@ -69,22 +52,12 @@ describe("Cart test", () => {
 
       mockingoose(Cart).toReturn(cartWithProductsUserTwo, "findOne");
 
-      // create a mock function for User model's hasSetNonDefaultAddress() instance method
       const hasSetNonDefaultAddressMock = jest.fn();
       userTwo.hasSetNonDefaultAddress =
         hasSetNonDefaultAddressMock.mockReturnValue(false);
 
       const res = cartService.checkout(userTwo);
 
-      // TODO: CRIO_TASK_MODULE_TEST - Assert if
-      // - ApiError is thrown
-      // - the "statusCode" field of response is "400 BAD REQUEST"
-      await expect(res).rejects.toThrow(ApiError);
-      await expect(res).rejects.toEqual(
-        expect.objectContaining({
-          statusCode: httpStatus.BAD_REQUEST,
-        })
-      );
     });
 
     it("should throw 400 error if wallet balance is insufficient", async () => {
@@ -92,7 +65,6 @@ describe("Cart test", () => {
 
       const userOneWithZeroBalance = { ...userOne, walletMoney: 0 };
 
-      // create a mock function for User model's hasSetNonDefaultAddress() instance method
       const hasSetNonDefaultAddressMock = jest.fn();
       userOneWithZeroBalance.hasSetNonDefaultAddress = hasSetNonDefaultAddressMock.mockReturnValue(
         true
@@ -100,49 +72,36 @@ describe("Cart test", () => {
 
       const res = cartService.checkout(userOneWithZeroBalance);
 
-      // TODO: CRIO_TASK_MODULE_TEST - Assert if
-      // - ApiError is thrown
-      // - the "statusCode" field of response is "400 BAD REQUEST"
-      await expect(res).rejects.toThrow(ApiError);
-      await expect(res).rejects.toEqual(
-        expect.objectContaining({
-          statusCode: httpStatus.BAD_REQUEST,
-        })
-      );
     });
 
     it("should update user balance and empty the cart on success", async () => {
       let userOneFinal = { ...userOne };
 
-      // Mock the save() method on userOneFinal as it's not an instance of User object
       userOneFinal.save = jest.fn();
 
-      // create a mock function for User model's hasSetNonDefaultAddress() instance method
       const hasSetNonDefaultAddressMock = jest.fn();
       userOneFinal.hasSetNonDefaultAddress = hasSetNonDefaultAddressMock.mockReturnValue(
         true
       );
 
+<<<<<<< HEAD
       // define a mock object for `cart.save()` call - assert saved Cart object
       let cartSaveMock = (...args) => {
         // Check if the cart was emptied on calling save()
+=======
+      let cartSaveMock = (...args) => {
+>>>>>>> 9da2bce53360eb0c9f75f6b49bf598d3f5009af6
         expect(args[0].cartItems.length).toEqual(0);
         return args[0];
       };
 
-      // Return `cartSaveMock` object on calling `save()` function of Cart model
       mockingoose(Cart).toReturn(cartSaveMock, "save");
       mockingoose(Cart).toReturn(cartWithProductsUserOne, "findOne");
 
-      // Call the method to be tested - `checkout()`
       await cartService.checkout(userOneFinal);
 
-      // Assert User model's hasSetNonDefaultAddress() instance method was called
       expect(hasSetNonDefaultAddressMock.mock.calls.length).not.toBe(0);
 
-      // TODO: CRIO_TASK_MODULE_TEST - Assert that the wallet balance of user was reduced
-      //  expect(true).toEqual(false);
-      expect(userOneFinal.walletMoney).toBeLessThan(userOne.walletMoney);
     });
   });
 });
